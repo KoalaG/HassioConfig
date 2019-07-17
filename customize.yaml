@@ -1,0 +1,5 @@
+device_tracker.pixel_3:
+  friendly_name: Gavin Phone
+  hidden: true
+sensor.yr_symbol:
+  friendly_name: Weather

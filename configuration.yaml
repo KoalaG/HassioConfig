@@ -1,0 +1,64 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+http:
+  base_url: https://home.gavinj.com.au:8123
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+#  ssl_certificate: /data/letsencrypt/live/home.gavinj.com.au/fullchain.pem
+#  ssl_key: /data/letsencrypt/live/home.gavinj.com.au/privkey.pem
+  
+# Sensors
+sensor:
+  # Weather prediction
+  - platform: yr
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+device_tracker: !include device_tracker.yaml
+  - platform: bluetooth_tracker
+  - platform: unifi
+    host: !secret unifi_host
+    username: !secret unifi_user
+    password: !secret unifi_pass
+    detection_time: 60
+    ssid_filter:
+      - 'LightningIP - CrispSt'
+    
+# enable persons
+# configured in UI
+person:
+
+#google_assistant:
+#  project_id: clever-grid-223521
+#  api_key: AIzaSyCMNCe8K1t--BlZQ9pA8cgzCZNSZ4_eVWI
+#  exposed_domains:
+#    - switch
+#    - light
+#  entity_config:
+
+# Philips Hue
+hue:
+  bridges:
+    - host: 192.168.0.21
+
+tplink:
+  discovery: false
+  light:
+  switch:
+    - host: 192.168.0.22
+
+light:
+  - platform: group
+    name: Master Bedroom
+    entities:
+      - light.bedroom
+      - light.robe
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
